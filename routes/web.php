@@ -3,12 +3,16 @@
 // Import the controllers so their short class names can be used in the routes below.
 use App\Http\Controllers\Userzone\ProfileController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\ArticleController;
 
 // Import Laravel's Route facade, which is used to define the application's URLs.
 use Illuminate\Support\Facades\Route;
 
 // Homepage flow: GET request to / -> WelcomeController -> index() -> welcome view.
 Route::get('/', [WelcomeController::class, 'index'])->name('home'); // When the get request is made to the root URL, the index method of the WelcomeController class is called.
+
+// Articles flow: GET request to /articles -> ArticleController -> index() -> articles index view.
+Route::get('articles', [ArticleController::class, 'index']);
 
 Route::get('/dashboard', function () {
     return view('userzone.dashboard');
