@@ -1,5 +1,6 @@
 <div>
-    Header comes here
+{{-- This menu link returns from one article to the complete public article list. --}}
+Header comes here | <a href="/articles">Articles</a>
 </div>
 
 {{-- $article is the single Article passed to this view by ArticleController::show(). --}}
