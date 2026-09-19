@@ -2,6 +2,8 @@
 
 // Import the controllers so their short class names can be used in the routes below.
 use App\Http\Controllers\Userzone\ProfileController;
+// Import WelcomeController so the route can use its short class name
+// instead of the full App\Http\Controllers\WelcomeController namespace.
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\ArticleController;
 
@@ -13,6 +15,7 @@ Route::get('/', [WelcomeController::class, 'index'])->name('home'); // When the 
 
 // Articles flow: GET request to /articles -> ArticleController -> index() -> articles index view.
 Route::get('articles', [ArticleController::class, 'index']);
+Route::get('articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
 
 Route::get('/dashboard', function () {
     return view('userzone.dashboard');
