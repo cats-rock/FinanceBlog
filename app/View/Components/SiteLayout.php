@@ -22,7 +22,7 @@ class SiteLayout extends Component
      */
     public function render(): View|Closure|string
     {
-        // Laravel translates this view name to resources/views/components/site-layout.blade.php.
-        return view('components.site-layout');
+        // The layout was moved from components/site-layout.blade.php to layouts/site.blade.php.
+        return view('layouts.site');
     }
 }

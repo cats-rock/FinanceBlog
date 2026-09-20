@@ -1,3 +1,4 @@
+{{-- This shared layout was moved here from resources/views/components/site-layout.blade.php. --}}
 <!DOCTYPE html>
 <html lang="en">
     <head>
