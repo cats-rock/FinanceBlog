@@ -1,7 +1,5 @@
-<div>
-{{-- This menu link returns visitors to the public article list. --}}
-Header comes here | <a href="/articles">Articles</a>
-</div>
+{{-- Wrap this page's unique content in the shared site layout. --}}
+<x-site-layout>
 
 <h1>Articles overview</h1>
 
@@ -22,6 +20,4 @@ Header comes here | <a href="/articles">Articles</a>
     @endforelse
 </ul>
 
-<div>
-    Footer comes here
-</div>
+</x-site-layout>
