@@ -13,6 +13,8 @@
             <a href="/articles/{{ $article->id }}">
                 <b>{{ $article->title }}</b>
             </a>
+            {{-- Follow the Article author relationship and display the related User's name. --}}
+            by {{ $article->author->name }}
         </li>
     @empty
         {{-- This branch is displayed when the controller returns an empty collection. --}}

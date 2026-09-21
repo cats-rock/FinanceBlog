@@ -45,4 +45,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // One user can author many articles; Laravel finds them through articles.author_id.
+    public function articles()
+    {
+        return $this->hasMany(Article::class, 'author_id');
+    }
 }
