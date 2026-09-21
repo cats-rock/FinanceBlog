@@ -14,8 +14,9 @@
     {{-- Shared navigation: changing it here changes every page that uses this layout. --}}
     <div style="background-color: #f0f0f0; padding: 10px;">
         Logo |
-        <a href="/">Home</a>
-        <a href="/articles">Articles</a>
+        @foreach($menu as $item)
+            <a href="{{$item['link']}}" style="padding-right: 8px;"> {{$item['label']}} </a>
+        @endforeach
     </div>
 
     {{-- Laravel inserts the content between <x-site-layout> and </x-site-layout> here. --}}
@@ -23,7 +24,9 @@
 
     {{-- Shared footer: individual pages no longer need to repeat this markup. --}}
     <div style="background-color: #000000; padding: 10px; color: #03FF03;">
-        Footer comes here
+    @foreach($menu as $item)
+            <a href="{{$item['link']}}" style="padding-right: 8px; color: #03FF03;"> {{$item['label']}} </a><br/>
+        @endforeach
     </div>
 
     </body>
