@@ -1,17 +1,19 @@
 {{-- Wrap this page's unique content in the shared site layout. --}}
 <x-site-layout>
 
-<h1>Articles overview</h1>
+{{-- Tailwind makes this heading larger (text-2xl) and bold (font-bold). --}}
+<h1 class="text-2xl font-bold">Articles overview</h1>
 
 <p>These are the public articles from our Finance Blog.</p>
 
-<ul>
+{{-- Tailwind displays disc-shaped bullets and places them inside the list area. --}}
+<ul class="list-disc list-inside">
     {{-- Loop through the $articles collection received from ArticleController. --}}
     @forelse ($articles as $article)
         <li>
             {{-- Insert this article's ID into the URL so clicking its title opens its show page. --}}
             <a href="/articles/{{ $article->id }}">
-                <b>{{ $article->title }}</b>
+                {{ $article->title }}
             </a>
             {{-- Follow the Article author relationship and display the related User's name. --}}
             by {{ $article->author->name }}

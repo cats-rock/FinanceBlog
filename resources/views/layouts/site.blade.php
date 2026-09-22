@@ -3,8 +3,10 @@
 <html lang="en">
     <head>
         {{-- This shared metadata is included on every page that uses <x-site-layout>. --}}
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {{-- Load Tailwind so its utility classes can style every page using this layout. --}}
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
         <title>Site title</title>
         <meta name="description" content="">
@@ -20,7 +22,10 @@
     </div>
 
     {{-- Laravel inserts the content between <x-site-layout> and </x-site-layout> here. --}}
-    {{ $slot }}
+    {{-- Tailwind adds left padding (pl-4) and top padding (pt-4) around the page content. --}}
+    <div class="pl-4 pt-4">
+        {{ $slot }}
+    </div>
 
     {{-- Shared footer: individual pages no longer need to repeat this markup. --}}
     <div style="background-color: #000000; padding: 10px; color: #03FF03;">
