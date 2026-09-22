@@ -24,10 +24,17 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // CRUD for article
-// This matches the teacher's commit, but it is public while it remains outside auth middleware.
-// TODO: Protect this admin route with the auth and verified middleware before production use.
+// These match the teacher's commits, but remain public while they are outside auth middleware.
+// TODO: Protect all admin routes with the auth and verified middleware before production use.
+// GET the admin index containing every article.
 Route::get('admin/articles', [App\Http\Controllers\Admin\ArticleController::class, 'index'])->name('admin.articles.index');
+// GET the empty form for creating an article.
+Route::get('admin/articles/create', [App\Http\Controllers\Admin\ArticleController::class, 'create'])
+    ->name('admin.articles.create');
 
+// POST the completed form to store a new article.
+Route::post('admin/articles', [App\Http\Controllers\Admin\ArticleController::class, 'store'])
+    ->name('admin.articles.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
