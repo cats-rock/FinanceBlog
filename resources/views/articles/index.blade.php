@@ -6,13 +6,14 @@
 
 <p>These are the public articles from our Finance Blog.</p>
 
-{{-- Tailwind displays disc-shaped bullets and places them inside the list area. --}}
-<ul class="list-disc list-inside">
+{{-- Tailwind displays bullets and adds vertical space between article rows. --}}
+<ul class="list-disc list-inside space-y-2">
     {{-- Loop through the $articles collection received from ArticleController. --}}
     @forelse ($articles as $article)
         <li>
             {{-- Insert this article's ID into the URL so clicking its title opens its show page. --}}
-            <a href="/articles/{{ $article->id }}">
+            {{-- Make the title visibly clickable and add space before the author text. --}}
+            <a href="/articles/{{ $article->id }}" class="text-blue-600 underline hover:text-blue-800 mr-1">
                 {{ $article->title }}
             </a>
             {{-- Follow the Article author relationship and display the related User's name. --}}
