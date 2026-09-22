@@ -23,6 +23,12 @@ Route::get('/dashboard', function () {
     return view('userzone.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// CRUD for article
+// This matches the teacher's commit, but it is public while it remains outside auth middleware.
+// TODO: Protect this admin route with the auth and verified middleware before production use.
+Route::get('admin/articles', [App\Http\Controllers\Admin\ArticleController::class, 'index'])->name('admin.articles.index');
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
