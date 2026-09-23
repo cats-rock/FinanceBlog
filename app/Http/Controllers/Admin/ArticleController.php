@@ -36,4 +36,27 @@ class ArticleController extends Controller
         // Return the administrator to the complete article list after creation.
         return redirect()->route('admin.articles.index');
     }
+
+    // Route model binding loads the Article whose ID appears in the edit URL.
+    public function edit(Article $article)
+    {
+        // Pass that Article to the view so its current values can fill the form.
+        return view('admin.articles.edit', compact('article'));
+    }
+
+    // Receive the edit form and update the same Article supplied by route model binding.
+    public function update(Request $request, Article $article)
+    {
+        // Validation rules will be added in a later step.
+
+        // Only these existing article values change; is_public remains unchanged.
+        $article->update([
+            'title' => $request['title'],
+            'content' => $request['content'],
+            'author_id' => $request['author_id'],
+        ]);
+
+        // Return the administrator to the article list after the update.
+        return redirect()->route('admin.articles.index');
+    }
 }

@@ -5,6 +5,9 @@
 
 @foreach($articles as $article)
     <div>
-        {{ $article->title }}  <a href="" >edit</a> <a href="" >delete</a>
+        {{ $article->title }}
+        {{-- Pass this article's ID to the named route so Laravel opens the correct edit form. --}}
+        <a href="{{route('admin.articles.edit',$article->id)}}" >edit</a>
+        <a href="" >delete</a>
     </div>
 @endforeach

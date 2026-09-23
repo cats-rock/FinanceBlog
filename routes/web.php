@@ -36,6 +36,14 @@ Route::get('admin/articles/create', [App\Http\Controllers\Admin\ArticleControlle
 Route::post('admin/articles', [App\Http\Controllers\Admin\ArticleController::class, 'store'])
     ->name('admin.articles.store');
 
+// GET the form containing the selected article's current values.
+Route::get('admin/articles/{article}/edit', [App\Http\Controllers\Admin\ArticleController::class, 'edit'])
+    ->name('admin.articles.edit');
+
+// PUT the submitted changes into the selected article.
+Route::put('admin/articles/{article}', [App\Http\Controllers\Admin\ArticleController::class, 'update'])
+    ->name('admin.articles.update');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
