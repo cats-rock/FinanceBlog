@@ -59,4 +59,14 @@ class ArticleController extends Controller
         // Return the administrator to the article list after the update.
         return redirect()->route('admin.articles.index');
     }
+
+    // Route model binding loads the Article selected by the DELETE request.
+    public function destroy(Article $article)
+    {
+        // Permanently remove this article's database row.
+        $article->delete();
+
+        // Return the administrator to the remaining article list.
+        return redirect()->route('admin.articles.index');
+    }
 }

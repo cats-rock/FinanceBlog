@@ -44,6 +44,12 @@ Route::get('admin/articles/{article}/edit', [App\Http\Controllers\Admin\ArticleC
 Route::put('admin/articles/{article}', [App\Http\Controllers\Admin\ArticleController::class, 'update'])
     ->name('admin.articles.update');
 
+// DELETE the selected article by passing it to the controller's destroy method.
+Route::delete(
+    'admin/articles/{article}',
+    [App\Http\Controllers\Admin\ArticleController::class, 'destroy']
+)->name('admin.articles.destroy');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
