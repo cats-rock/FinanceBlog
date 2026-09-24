@@ -16,8 +16,8 @@
             <a href="/articles/{{ $article->id }}" class="text-blue-600 underline hover:text-blue-800 mr-1">
                 {{ $article->title }}
             </a>
-            {{-- Follow the Article author relationship and display the related User's name. --}}
-            by {{ $article->author->name }}
+            {{-- Display the related User's name, or "unknown" if the relationship is missing. --}}
+            by {{ $article->author->name ?? 'unknown' }}
         </li>
     @empty
         {{-- This branch is displayed when the controller returns an empty collection. --}}
