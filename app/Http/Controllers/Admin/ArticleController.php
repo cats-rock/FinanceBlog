@@ -24,7 +24,12 @@ class ArticleController extends Controller
     // Receive the submitted form data and store a new article.
     public function store(Request $request)
     {
-        // Validation rules will be added in a later step.
+        // Invalid data redirects back to the form; the article is created only after every rule passes.
+        $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'content' => ['required', 'string'],
+            'author_id' => ['required', 'integer', 'exists:users,id'],
+        ]);
 
         // is_public is omitted, so the database default creates a private article.
         Article::create([
@@ -47,7 +52,12 @@ class ArticleController extends Controller
     // Receive the edit form and update the same Article supplied by route model binding.
     public function update(Request $request, Article $article)
     {
-        // Validation rules will be added in a later step.
+        // Apply the same rules before changing the existing article, preserving it when validation fails.
+        $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'content' => ['required', 'string'],
+            'author_id' => ['required', 'integer', 'exists:users,id'],
+        ]);
 
         // Only these existing article values change; is_public remains unchanged.
         $article->update([
