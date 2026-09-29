@@ -5,17 +5,11 @@
     {{-- Laravel checks this CSRF token to reject form submissions from untrusted websites. --}}
     @csrf
 
-    {{-- These field names become values available in the Request object. --}}
-
-    <div>
-        <label for="content">Content</label><br>
-        <textarea name="content" placeholder="Your article content">{{old('content')}}</textarea>
-        @error('content') <div style="color: red;">{{$message}} </div>  @enderror
-    </div>
-
-
     {{-- Blade replaces this tag with the reusable title input component and passes these attributes as props. --}}
     <x-form-text-input name="title" label="Title*" placeholder="Title" />
+
+    {{-- A new article has no saved content fallback; the component restores old input after validation fails. --}}
+    <x-form-textarea name="content" label="Content" placeholder="Your article content" />
 
     {{-- A new article has no saved author fallback; the component restores old input after validation fails. --}}
     <x-form-number-input name="author_id" label="Author" placeholder="Author ID" />
