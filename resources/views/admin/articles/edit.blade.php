@@ -14,15 +14,13 @@
         @error('content') <div style="color: red;">{{$message}} </div>  @enderror
     </div>
 
-    {{-- The author ID remains editable for now; authenticated ownership will be improved later. --}}
-    <div>
-        <label for="title">Author</label><br>
-        <input type="number" name="author_id" placeholder="Author ID" value="{{old('author_id', $article->author_id)}}">
-        @error('author_id') <div style="color: red;">{{$message}} </div>  @enderror
-    </div>
+
 
     {{-- Supply the saved title as the fallback; the component prefers old input after validation fails. --}}
     <x-form-text-input name="title" label="Title*" placeholder="Title" value="{{$article->title}}" />
+
+    {{-- Supply the saved author ID as the fallback; old input takes priority after validation fails. --}}
+    <x-form-number-input name="author_id" label="Author" placeholder="Author ID" value="{{$article->author_id}}" />
 
     <button type="submit">Save changes</button>
 </form>

@@ -13,15 +13,12 @@
         @error('content') <div style="color: red;">{{$message}} </div>  @enderror
     </div>
 
-    {{-- The submitted author ID must match an existing user before the controller creates the article. --}}
-    <div>
-        <label for="title">Author</label><br>
-        <input type="number" name="author_id" placeholder="Author ID" value="{{old('author_id')}}">
-        @error('author_id') <div style="color: red;">{{$message}} </div>  @enderror
-    </div>
 
     {{-- Blade replaces this tag with the reusable title input component and passes these attributes as props. --}}
     <x-form-text-input name="title" label="Title*" placeholder="Title" />
+
+    {{-- A new article has no saved author fallback; the component restores old input after validation fails. --}}
+    <x-form-number-input name="author_id" label="Author" placeholder="Author ID" />
 
     {{-- Submitting sends the form to the store route; it does not call create() again. --}}
     <button type="submit">Create article</button>
