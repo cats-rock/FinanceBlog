@@ -23,32 +23,34 @@ Route::get('/dashboard', function () {
     return view('userzone.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// CRUD for article
-// These match the teacher's commits, but remain public while they are outside auth middleware.
-// TODO: Protect all admin routes with the auth and verified middleware before production use.
-// GET the admin index containing every article.
-Route::get('admin/articles', [App\Http\Controllers\Admin\ArticleController::class, 'index'])->name('admin.articles.index');
-// GET the empty form for creating an article.
-Route::get('admin/articles/create', [App\Http\Controllers\Admin\ArticleController::class, 'create'])
-    ->name('admin.articles.create');
+// The auth middleware redirects guests to login before any Article management action can run.
+Route::middleware(['auth'])->group(function () {
+    // GET the protected admin index containing every article.
+    Route::get('admin/articles', [App\Http\Controllers\Admin\ArticleController::class, 'index'])
+        ->name('admin.articles.index');
 
-// POST the completed form to store a new article.
-Route::post('admin/articles', [App\Http\Controllers\Admin\ArticleController::class, 'store'])
-    ->name('admin.articles.store');
+    // GET the protected form used to create an article.
+    Route::get('admin/articles/create', [App\Http\Controllers\Admin\ArticleController::class, 'create'])
+        ->name('admin.articles.create');
 
-// GET the form containing the selected article's current values.
-Route::get('admin/articles/{article}/edit', [App\Http\Controllers\Admin\ArticleController::class, 'edit'])
-    ->name('admin.articles.edit');
+    // POST the completed form to store an article for the authenticated user.
+    Route::post('admin/articles', [App\Http\Controllers\Admin\ArticleController::class, 'store'])
+        ->name('admin.articles.store');
 
-// PUT the submitted changes into the selected article.
-Route::put('admin/articles/{article}', [App\Http\Controllers\Admin\ArticleController::class, 'update'])
-    ->name('admin.articles.update');
+    // GET the protected form containing the selected article's current values.
+    Route::get('admin/articles/{article}/edit', [App\Http\Controllers\Admin\ArticleController::class, 'edit'])
+        ->name('admin.articles.edit');
 
-// DELETE the selected article by passing it to the controller's destroy method.
-Route::delete(
-    'admin/articles/{article}',
-    [App\Http\Controllers\Admin\ArticleController::class, 'destroy']
-)->name('admin.articles.destroy');
+    // PUT the submitted changes into the selected article.
+    Route::put('admin/articles/{article}', [App\Http\Controllers\Admin\ArticleController::class, 'update'])
+        ->name('admin.articles.update');
+
+    // DELETE the selected article by passing it to the controller's destroy method.
+    Route::delete(
+        'admin/articles/{article}',
+        [App\Http\Controllers\Admin\ArticleController::class, 'destroy']
+    )->name('admin.articles.destroy');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

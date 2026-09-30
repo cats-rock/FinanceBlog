@@ -31,11 +31,12 @@ class ArticleController extends Controller
             'author_id' => ['required', 'integer', 'exists:users,id'],
         ]);
 
+        // Use the authenticated user's ID instead of trusting an author ID submitted by the form.
         // is_public is omitted, so the database default creates a private article.
         Article::create([
             'title' => $request['title'],
             'content' => $request['content'],
-            'author_id' => $request['author_id'],
+            'author_id' => auth()->user()->id,
         ]);
 
         // Return the administrator to the complete article list after creation.

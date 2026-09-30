@@ -29,9 +29,16 @@
 
     {{-- Shared footer: individual pages no longer need to repeat this markup. --}}
     <div style="background-color: #000000; padding: 10px; color: #03FF03;">
-    @foreach($menu as $item)
+        @foreach($menu as $item)
             <a href="{{$item['link']}}" style="padding-right: 8px; color: #03FF03;"> {{$item['label']}} </a><br/>
         @endforeach
+
+        {{-- Logged-in users can open article management; guests receive a link to the existing login route. --}}
+        @auth
+            <a href="{{route('admin.articles.index')}}">Article management</a>
+        @else
+            <a href="{{route('login')}}">Login</a>
+        @endauth
     </div>
 
     </body>
