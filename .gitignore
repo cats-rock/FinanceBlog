@@ -20,6 +20,7 @@
 /storage/pail
 /vendor
 /README.learning.md
+/.cursor/rules/financeblog-context.mdc
 Homestead.json
 Homestead.yaml
 Thumbs.db
