@@ -16,14 +16,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create the single blog user first so every sample article has a valid author.
+        // Create the project's known administrator explicitly instead of assigning admin status randomly.
+        // This user is also the only article author during the current project stage.
         $user = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'is_admin' => true,
         ]);
 
-        // Generate ten articles and override the factory's fallback author.
-        // Reusing this ID makes all ten articles belong to the same user.
+        // Override the factory's fallback author so all sample articles belong to the known administrator.
         Article::factory(10)->create([
             'author_id' => $user->id,
         ]);
