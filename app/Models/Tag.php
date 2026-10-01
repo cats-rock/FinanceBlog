@@ -12,4 +12,11 @@ class Tag extends Model
 
     // Allow the factory and future Article forms to assign Tag attributes.
     protected $guarded = [];
+
+    // Configure the other side of the many-to-many relationship: one Tag can be attached to many Articles.
+    // Eloquent uses the same article_tag pivot table defined by Article::tags().
+    public function articles()
+    {
+        return $this->belongsToMany(Article::class);
+    }
 }

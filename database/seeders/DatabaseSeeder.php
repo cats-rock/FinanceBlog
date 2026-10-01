@@ -25,12 +25,22 @@ class DatabaseSeeder extends Seeder
             'is_admin' => true,
         ]);
 
-        // Override the factory's fallback author so all sample articles belong to the known administrator.
-        Article::factory(10)->create([
+        // Create ten sample Articles owned by the known administrator.
+        // Store the resulting collection so Tags can be attached to each Article.
+        $articles = Article::factory(10)->create([
             'author_id' => $user->id,
         ]);
 
-        // Create five standalone Tags; Article relationships are added in the next commit.
+        // Create five Tags that can be shared by the sample Articles.
         Tag::factory(5)->create();
+
+        // Attach between zero and three random Tags to every Article.
+        foreach ($articles as $article) {
+            $article->tags()->attach(
+                Tag::inRandomOrder()
+                    ->take(rand(0, 3))
+                    ->pluck('id')
+            );
+        }
     }
 }

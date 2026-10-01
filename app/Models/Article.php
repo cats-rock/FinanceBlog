@@ -21,4 +21,11 @@ class Article extends Model
     {
         return $this->belongsTo(User::class, 'author_id');
     }
+
+    // Configure the many-to-many relationship: an Article can have many Tags through the article_tag pivot table.
+    // This method teaches Eloquent how to find the related Tags; the migration creates the actual pivot table.
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }
