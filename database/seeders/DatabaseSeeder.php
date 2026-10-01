@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Article;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -28,5 +29,8 @@ class DatabaseSeeder extends Seeder
         Article::factory(10)->create([
             'author_id' => $user->id,
         ]);
+
+        // Create five standalone Tags; Article relationships are added in the next commit.
+        Tag::factory(5)->create();
     }
 }
