@@ -50,6 +50,9 @@ class ArticleController extends Controller
     // Route model binding loads the Article whose ID appears in the edit URL.
     public function edit(Article $article)
     {
+        // Authentication proves who is logged in; canChange() authorizes this specific Article.
+        abort_unless($article->canChange(auth()->user()), 403);
+
         // Pass that Article to the view so its current values can fill the form.
         return view('admin.articles.edit', compact('article'));
     }
@@ -57,6 +60,9 @@ class ArticleController extends Controller
     // Receive the edit form and update the same Article supplied by route model binding.
     public function update(Request $request, Article $article)
     {
+        // Check authorization again because someone could submit the update URL directly.
+        abort_unless($article->canChange(auth()->user()), 403);
+
         // Apply the same rules before changing the existing article, preserving it when validation fails.
         $request->validate([
             'title' => ['required', 'string', 'max:255'],
@@ -78,6 +84,9 @@ class ArticleController extends Controller
     // Route model binding loads the Article selected by the DELETE request.
     public function destroy(Article $article)
     {
+        // Deny deletion unless the logged-in User is the author or an administrator.
+        abort_unless($article->canChange(auth()->user()), 403);
+
         // Permanently remove this article's database row.
         $article->delete();
 

@@ -28,4 +28,21 @@ class Article extends Model
     {
         return $this->belongsToMany(Tag::class);
     }
+
+    // Decide whether a specific User may edit, update, or delete this Article.
+    public function canChange(User $user): bool
+    {
+        // The User who wrote the Article may manage their own work.
+        if ($user->id === $this->author_id) {
+            return true;
+        }
+
+        // An administrator may manage any Article, including one written by another User.
+        if ($user->is_admin) {
+            return true;
+        }
+
+        // Every other authenticated User is denied.
+        return false;
+    }
 }
