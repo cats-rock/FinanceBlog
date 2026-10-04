@@ -22,7 +22,8 @@ class ArticleFactory extends Factory
         return [
             // Faker creates realistic sample text so articles do not need to be entered manually.
             'title' => fake()->sentence(),
-            'content' => fake()->paragraph(),
+            // Generate seven paragraphs as one string so seeded Articles have realistic long-form content.
+            'content' => fake()->paragraphs(7, true),
             // This is a fallback: create an author if the caller does not provide an existing user ID.
             'author_id' => User::factory(),
             // A generated article is randomly public (true) or private (false).

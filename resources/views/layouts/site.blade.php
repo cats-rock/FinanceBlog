@@ -16,7 +16,7 @@
         {{-- The header is centered and uses Flexbox to separate the logo, menu, and account link. --}}
         <div class="bg-slate-600 border-b border-slate-500 p-3 text-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-                <div>Logo</div>
+                <div class="text-lg font-bold">FinanceBlog</div>
 
                 <div>
                     @foreach ($menu as $item)
