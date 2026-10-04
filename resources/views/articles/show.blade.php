@@ -3,12 +3,15 @@
 
     {{-- $article is the single Article passed to this view by ArticleController::show(). --}}
 
-    {{-- Display related Tags as separate badges, so comma separators are no longer needed. --}}
+    {{-- Display related Tags as badges that link to their public Tag pages. --}}
     <div class="flex flex-wrap gap-2 mb-3">
         @forelse ($article->tags as $tag)
-            <span class="bg-black text-green-200 text-xs rounded-full px-2">
+            <a
+                class="bg-black text-green-200 text-xs rounded-full px-2"
+                href="{{ route('tags.show', $tag) }}"
+            >
                 {{ $tag->name }}
-            </span>
+            </a>
         @empty
             <span class="text-sm text-gray-500">No tags</span>
         @endforelse
@@ -16,8 +19,17 @@
 
     <h1 class="text-2xl font-bold">{{ $article->title }}</h1>
 
-    {{-- Follow the Article author relationship and display the related User's name. --}}
-    <p class="mt-1 mb-6 italic">Author: {{ $article->author?->name ?? 'unknown' }}</p>
+    {{-- Link the related User to their public Author page when the relationship exists. --}}
+    <p class="mt-1 mb-6 italic">
+        Author:
+        @if ($article->author)
+            <a class="underline hover:text-slate-600" href="{{ route('authors.show', $article->author) }}">
+                {{ $article->author->name }}
+            </a>
+        @else
+            unknown
+        @endif
+    </p>
 
     {{-- Preserve paragraph breaks in the longer factory-generated Article content. --}}
     <div>

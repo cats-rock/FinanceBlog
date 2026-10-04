@@ -11,23 +11,32 @@
         {{-- Loop through the public Articles received from ArticleController. --}}
         @forelse ($articles as $article)
             <li class="p-1 border-t border-black hover:bg-gray-200">
-                {{-- Display every Tag connected to this Article through the article_tag pivot table. --}}
+                {{-- Each Tag badge links to a page listing the public Articles connected to that Tag. --}}
                 @foreach ($article->tags as $tag)
-                    <span class="bg-black text-green-200 text-xs rounded-full px-2">
+                    <a
+                        class="bg-black text-green-200 text-xs rounded-full px-2"
+                        href="{{ route('tags.show', $tag) }}"
+                    >
                         {{ $tag->name }}
-                    </span>
+                    </a>
                 @endforeach
 
-                {{-- Both the title and content preview open the selected Article's detail page. --}}
-                <a class="block text-xl font-semibold" href="/articles/{{ $article->id }}">
+                {{-- Named routes keep the view independent from the exact Article URL structure. --}}
+                <a class="block text-xl font-semibold" href="{{ route('articles.show', $article) }}">
                     {{ $article->title }}
                 </a>
 
-                {{-- Display the related User's name, or "unknown" if the relationship is missing. --}}
-                <span class="italic text-sm">by {{ $article->author?->name ?? 'unknown' }}</span>
+                {{-- Link to the Author page only when the related User exists. --}}
+                @if ($article->author)
+                    <a class="italic text-sm" href="{{ route('authors.show', $article->author) }}">
+                        by {{ $article->author->name }}
+                    </a>
+                @else
+                    <span class="italic text-sm">by unknown</span>
+                @endif
 
                 {{-- Str::limit shortens long seeded content to a 100-character preview. --}}
-                <a class="block mt-4 text-gray-700" href="/articles/{{ $article->id }}">
+                <a class="block mt-4 text-gray-700" href="{{ route('articles.show', $article) }}">
                     {{ Str::limit($article->content, 100) }}
                 </a>
             </li>
