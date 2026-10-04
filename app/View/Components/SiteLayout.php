@@ -18,8 +18,10 @@ class SiteLayout extends Component
     {
         // Capitalized labels are displayed in the menu and verified by the welcome-page test.
         $this->menu = [
-            ['label' => 'Home', 'link' => '/'],
-            ['label' => 'Articles', 'link' => '/articles'],
+            ['label' => 'Home', 'link' => route('home')],
+            ['label' => 'Articles', 'link' => route('articles.index')],
+            ['label' => 'Authors', 'link' => route('authors.index')],
+            ['label' => 'Tags', 'link' => route('tags.index')],
             ['label' => 'About', 'link' => '/about'],
         ];
     }

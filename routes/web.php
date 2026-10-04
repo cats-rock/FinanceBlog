@@ -6,6 +6,8 @@ use App\Http\Controllers\Userzone\ProfileController;
 // instead of the full App\Http\Controllers\WelcomeController namespace.
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\TagController;
 
 // Import Laravel's Route facade, which is used to define the application's URLs.
 use Illuminate\Support\Facades\Route;
@@ -15,8 +17,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [WelcomeController::class, 'index'])->name('home'); // When the get request is made to the root URL, the index method of the WelcomeController class is called.
 
 // Articles flow: GET request to /articles -> ArticleController -> index() -> articles index view.
-Route::get('articles', [ArticleController::class, 'index']);
+Route::get('articles', [ArticleController::class, 'index'])->name('articles.index');
 Route::get('articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
+
+// Authors are existing Users who have written at least one public Article.
+Route::get('authors', [AuthorController::class, 'index'])->name('authors.index');
+Route::get('authors/{user}', [AuthorController::class, 'show'])->name('authors.show');
+
+// Tags can be browsed directly, and each Tag page lists its related public Articles.
+Route::get('tags', [TagController::class, 'index'])->name('tags.index');
+Route::get('tags/{tag}', [TagController::class, 'show'])->name('tags.show');
 
 // Authenticated routes: only logged-in users can access these pages.
 Route::get('/dashboard', function () {
