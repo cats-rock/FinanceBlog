@@ -13,33 +13,60 @@
         <meta name="keywords" content="">
     </head>
     <body>
-    {{-- Shared navigation: changing it here changes every page that uses this layout. --}}
-    <div style="background-color: #f0f0f0; padding: 10px;">
-        Logo |
-        @foreach($menu as $item)
-            <a href="{{$item['link']}}" style="padding-right: 8px;"> {{$item['label']}} </a>
-        @endforeach
-    </div>
+        {{-- The header is centered and uses Flexbox to separate the logo, menu, and account link. --}}
+        <div class="bg-slate-600 border-b border-slate-500 p-3 text-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                <div>Logo</div>
 
-    {{-- Laravel inserts the content between <x-site-layout> and </x-site-layout> here. --}}
-    {{-- Tailwind adds left padding (pl-4) and top padding (pt-4) around the page content. --}}
-    <div class="pl-4 pt-4">
-        {{ $slot }}
-    </div>
+                <div>
+                    @foreach ($menu as $item)
+                        <a href="{{ $item['link'] }}" style="padding-right: 8px;">
+                            {{ $item['label'] }}
+                        </a>
+                    @endforeach
+                </div>
 
-    {{-- Shared footer: individual pages no longer need to repeat this markup. --}}
-    <div style="background-color: #000000; padding: 10px; color: #03FF03;">
-        @foreach($menu as $item)
-            <a href="{{$item['link']}}" style="padding-right: 8px; color: #03FF03;"> {{$item['label']}} </a><br/>
-        @endforeach
+                {{-- Show Article management to logged-in users and Login to guests. --}}
+                <div>
+                    @auth
+                        <a href="{{ route('admin.articles.index') }}">Article management</a>
+                    @else
+                        <a href="{{ route('login') }}">Login</a>
+                    @endauth
+                </div>
+            </div>
+        </div>
 
-        {{-- Logged-in users can open article management; guests receive a link to the existing login route. --}}
-        @auth
-            <a href="{{route('admin.articles.index')}}">Article management</a>
-        @else
-            <a href="{{route('login')}}">Login</a>
-        @endauth
-    </div>
+        {{-- Keep each page's slot aligned with the header and give short pages a minimum content height. --}}
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-96">
+            <div class="pt-8">
+                {{ $slot }}
+            </div>
+        </div>
+
+        {{-- Shared footer with the blog identity and responsive navigation. --}}
+        <footer class="mt-8 bg-slate-900 text-gray-300">
+            <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 sm:flex sm:items-center sm:justify-between">
+                <div>
+                    <p class="text-lg font-semibold text-white">FinanceBlog</p>
+                    <p class="mt-1 text-sm text-gray-400">
+                        Simple financial articles and useful information.
+                    </p>
+                </div>
+
+                {{-- On small screens the links wrap; on wider screens they sit beside the blog identity. --}}
+                <nav class="mt-4 flex flex-wrap gap-5 sm:mt-0" aria-label="Footer navigation">
+                    @foreach ($menu as $item)
+                        <a
+                            href="{{ $item['link'] }}"
+                            class="text-sm hover:text-white hover:underline"
+                        >
+                            {{ $item['label'] }}
+                        </a>
+                    @endforeach
+                </nav>
+            </div>
+        </footer>
 
     </body>
 </html>
