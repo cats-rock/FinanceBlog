@@ -1,39 +1,39 @@
-{{-- Wrap this page's unique content in the shared site layout. --}}
 <x-site-layout>
+    <article class="mx-auto max-w-[43rem]">
+        <header>
+            {{-- Each Tag pill links readers to other public Articles with that Tag. --}}
+            @if ($article->tags->isNotEmpty())
+                <ul class="mb-6 flex flex-wrap gap-2">
+                    @foreach ($article->tags as $index => $tag)
+                        <li>
+                            <x-site-tag-pill :tag="$tag" :index="$index" />
+                        </li>
+                    @endforeach
+                </ul>
+            @endif
 
-    {{-- $article is the single Article passed to this view by ArticleController::show(). --}}
+            <h1 class="text-heading-2xl font-normal tracking-[-0.02em] text-ink">
+                {{ $article->title }}
+            </h1>
 
-    {{-- Display related Tags as badges that link to their public Tag pages. --}}
-    <div class="flex flex-wrap gap-2 mb-3">
-        @forelse ($article->tags as $tag)
-            <a
-                class="bg-black text-green-200 text-xs rounded-full px-2"
-                href="{{ route('tags.show', $tag) }}"
-            >
-                {{ $tag->name }}
-            </a>
-        @empty
-            <span class="text-sm text-gray-500">No tags</span>
-        @endforelse
-    </div>
+            <div class="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 font-label text-label-s text-ink-muted">
+                {{-- The Article belongs to a User who acts as its Author. --}}
+                @if ($article->author)
+                    <a href="{{ route('authors.show', $article->author) }}" class="transition-colors duration-200 hover:text-ink">
+                        by {{ $article->author->name }}
+                    </a>
+                @else
+                    <span>by unknown</span>
+                @endif
 
-    <h1 class="text-2xl font-bold">{{ $article->title }}</h1>
+                @if ($article->created_at)
+                    <span aria-hidden="true" class="text-rule-strong">/</span>
+                    <time datetime="{{ $article->created_at->toDateString() }}">{{ $article->created_at->isoFormat('D MMM YYYY') }}</time>
+                @endif
+            </div>
+        </header>
 
-    {{-- Link the related User to their public Author page when the relationship exists. --}}
-    <p class="mt-1 mb-6 italic">
-        Author:
-        @if ($article->author)
-            <a class="underline hover:text-slate-600" href="{{ route('authors.show', $article->author) }}">
-                {{ $article->author->name }}
-            </a>
-        @else
-            unknown
-        @endif
-    </p>
-
-    {{-- Preserve paragraph breaks in the longer factory-generated Article content. --}}
-    <div>
-        <p class="whitespace-pre-line leading-7">{{ $article->content }}</p>
-    </div>
-
+        {{-- whitespace-pre-line preserves the paragraphs generated for long-form Article content. --}}
+        <div class="mt-10 whitespace-pre-line text-body-l leading-8 text-ink-soft">{{ $article->content }}</div>
+    </article>
 </x-site-layout>
