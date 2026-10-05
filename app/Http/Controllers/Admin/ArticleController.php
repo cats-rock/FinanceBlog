@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
     public function index()
     {
-        if(auth()->user()->is_admin) {
+        if (auth()->user()->is_admin) {
             $articles = Article::all();
         } else {
             $articles = Article::where('author_id', auth()->user()->id)->get();
@@ -24,15 +25,16 @@ class ArticleController extends Controller
     public function create()
     {
         $tag_options = Tag::orderBy('name')->pluck('name', 'id')->toArray();
+        $author_options = User::orderBy('name')->pluck('name', 'id')->toArray();
 
-        return view('admin.articles.create', compact('tag_options'));
+        return view('admin.articles.create', compact('tag_options', 'author_options'));
     }
 
     // Receive the submitted form data and store a new article.
     public function store(Request $request)
     {
         // Validate the Article fields and every selected Tag ID before creating anything.
-         $request->validate([
+        $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'content' => ['required', 'string'],
             'author_id' => ['required', 'integer', 'exists:users,id'],
@@ -40,19 +42,19 @@ class ArticleController extends Controller
             'tags.*' => ['integer', 'exists:tags,id'],
         ]);
 
-            // Use the authenticated user's ID instead of trusting an author ID submitted by the form.
-            // is_public is omitted, so the database default creates a private article.
+        // Use the authenticated user's ID instead of trusting an author ID submitted by the form.
+        // is_public is omitted, so the database default creates a private article.
         $article = Article::create([
-                'title' => $request['title'],
-                'content' => $request['content'],
-                'author_id' => auth()->user()->id,
-            ]);
+            'title' => $request['title'],
+            'content' => $request['content'],
+            'author_id' => auth()->user()->id,
+        ]);
 
-             // Save the selected Tag connections in article_tag; use an empty array when none were selected.
-            $article->tags()->sync($request->input('tags', []));
+        // Save the selected Tag connections in article_tag; use an empty array when none were selected.
+        $article->tags()->sync($request->input('tags', []));
 
-            // Return to the Article management list after creating the Article and attaching its Tags.
-            return redirect()->route('admin.articles.index');
+        // Return to the Article management list after creating the Article and attaching its Tags.
+        return redirect()->route('admin.articles.index');
     }
 
     // Route model binding loads the Article whose ID appears in the edit URL.
@@ -66,8 +68,13 @@ class ArticleController extends Controller
             ->pluck('name', 'id')
             ->toArray();
 
-        // Pass the Article and all Tag options to the edit form.
-        return view('admin.articles.edit', compact('article', 'tag_options'));
+        // Load Users as [ID => name] options for the Author dropdown.
+        $author_options = User::orderBy('name')
+            ->pluck('name', 'id')
+            ->toArray();
+
+        // Pass the Article, Tag options, and Author options to the edit form.
+        return view('admin.articles.edit', compact('article', 'tag_options', 'author_options'));
     }
 
     // Receive the edit form and update the same Article supplied by route model binding.
