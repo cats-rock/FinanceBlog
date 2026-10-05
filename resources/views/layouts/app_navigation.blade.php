@@ -15,6 +15,11 @@
                     <x-breeze.nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-breeze.nav-link>
+
+                    {{-- Keep Article management available throughout the authenticated admin area. --}}
+                    <x-breeze.nav-link :href="route('admin.articles.index')" :active="request()->routeIs('admin.articles.*')">
+                        {{ __('Article management') }}
+                    </x-breeze.nav-link>
                 </div>
             </div>
 
@@ -69,6 +74,11 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-breeze.responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+            </x-breeze.responsive-nav-link>
+
+            {{-- Repeat the management link inside the mobile navigation menu. --}}
+            <x-breeze.responsive-nav-link :href="route('admin.articles.index')" :active="request()->routeIs('admin.articles.*')">
+                {{ __('Article management') }}
             </x-breeze.responsive-nav-link>
         </div>
 
