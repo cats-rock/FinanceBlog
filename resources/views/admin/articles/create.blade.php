@@ -28,7 +28,7 @@
                         <x-form-checkboxes name="tags" label="Tags" :options="$tag_options" />
 
                         {{-- Submitting sends the form to the store route; it does not call create() again. --}}
-                        <button type="submit" class="rounded border border-gray-400 px-3 py-2">
+                        <button type="submit" class="pressable inline-flex w-fit items-center gap-2.5 rounded-md border border-ink bg-accent-teal px-3.5 py-2.5 font-label text-label-m text-ink transition-all duration-[240ms] ease-in-out">
                             Create article
                         </button>
                     </form>

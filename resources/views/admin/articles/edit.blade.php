@@ -32,7 +32,7 @@
                         {{-- Supply the Article's current Tag IDs so its existing relationships begin checked. --}}
                         <x-form-checkboxes name="tags" label="Tags" :values="$article->tags->pluck('id')->toArray()" :options="$tag_options" />
 
-                        <button type="submit" class="rounded border border-gray-400 px-3 py-2">
+                        <button type="submit" class="pressable inline-flex w-fit items-center gap-2.5 rounded-md border border-ink bg-accent-teal px-3.5 py-2.5 font-label text-label-m text-ink transition-all duration-[240ms] ease-in-out">
                             Save changes
                         </button>
                     </form>
