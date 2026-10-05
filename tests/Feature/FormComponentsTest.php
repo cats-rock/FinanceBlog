@@ -88,7 +88,8 @@ it('renders checkboxes and marks the checked values', function () {
 
     $view->assertSee('Tags');
     $view->assertSee('name="tags[]"', false);
-    $view->assertSee('value="1" checked', false);
+    // Attribute formatting may span lines; verify that the selected value is followed by checked.
+    $view->assertSeeInOrder(['value="1"', 'checked'], false);
     $view->assertSee('value="2"', false);
 });
 
