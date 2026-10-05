@@ -15,7 +15,7 @@
         {{-- Vite builds the local Tailwind styles and responsive navigation script. --}}
         @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/site-nav.js'])
     </head>
-    <body class="bg-paper font-sans text-ink antialiased">
+    <body class="bg-[#edf2f7] font-sans text-ink antialiased">
         <div class="flex min-h-screen flex-col">
             {{-- The same responsive header is shared by every public page. --}}
             <x-site-header :menu="$menu" />

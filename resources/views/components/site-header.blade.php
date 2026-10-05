@@ -2,7 +2,7 @@
     'menu' => [],
 ])
 
-<header class="sticky top-0 z-50 border-b border-rule bg-paper/90 backdrop-blur">
+<header class="sticky top-0 z-50 border-b border-rule bg-[#c6d5e6]/90 backdrop-blur">
     <div class="mx-auto max-w-[87.5rem] px-5 md:px-10">
         <div class="flex h-16 items-center justify-between gap-6">
             <x-site-logo :href="route('home')" />
