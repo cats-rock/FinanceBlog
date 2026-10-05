@@ -60,6 +60,25 @@ Route::middleware(['auth'])->group(function () {
         'admin/articles/{article}',
         [App\Http\Controllers\Admin\ArticleController::class, 'destroy']
     )->name('admin.articles.destroy');
+
+    // Protected CRUD routes for managing Tag records.
+    Route::get('admin/tags', [App\Http\Controllers\Admin\TagController::class, 'index'])
+        ->name('admin.tags.index');
+
+    Route::get('admin/tags/create', [App\Http\Controllers\Admin\TagController::class, 'create'])
+        ->name('admin.tags.create');
+
+    Route::post('admin/tags', [App\Http\Controllers\Admin\TagController::class, 'store'])
+        ->name('admin.tags.store');
+
+    Route::get('admin/tags/{tag}/edit', [App\Http\Controllers\Admin\TagController::class, 'edit'])
+        ->name('admin.tags.edit');
+
+    Route::put('admin/tags/{tag}', [App\Http\Controllers\Admin\TagController::class, 'update'])
+        ->name('admin.tags.update');
+
+    Route::delete('admin/tags/{tag}', [App\Http\Controllers\Admin\TagController::class, 'destroy'])
+        ->name('admin.tags.destroy');
 });
 
 Route::middleware('auth')->group(function () {

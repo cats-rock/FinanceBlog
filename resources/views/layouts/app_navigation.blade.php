@@ -20,6 +20,11 @@
                     <x-breeze.nav-link :href="route('admin.articles.index')" :active="request()->routeIs('admin.articles.*')">
                         {{ __('Article management') }}
                     </x-breeze.nav-link>
+
+                    {{-- Open Tag CRUD pages and keep this link active throughout that section. --}}
+                    <x-breeze.nav-link :href="route('admin.tags.index')" :active="request()->routeIs('admin.tags.*')">
+                        {{ __('Tag management') }}
+                    </x-breeze.nav-link>
                 </div>
             </div>
 
@@ -79,6 +84,11 @@
             {{-- Repeat the management link inside the mobile navigation menu. --}}
             <x-breeze.responsive-nav-link :href="route('admin.articles.index')" :active="request()->routeIs('admin.articles.*')">
                 {{ __('Article management') }}
+            </x-breeze.responsive-nav-link>
+
+            {{-- Provide the same Tag management destination in the mobile menu. --}}
+            <x-breeze.responsive-nav-link :href="route('admin.tags.index')" :active="request()->routeIs('admin.tags.*')">
+                {{ __('Tag management') }}
             </x-breeze.responsive-nav-link>
         </div>
 
