@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -22,29 +23,36 @@ class ArticleController extends Controller
     // Display the form used to enter a new article's data.
     public function create()
     {
-        return view('admin.articles.create');
+        $tag_options = Tag::orderBy('name')->pluck('name', 'id')->toArray();
+
+        return view('admin.articles.create', compact('tag_options'));
     }
 
     // Receive the submitted form data and store a new article.
     public function store(Request $request)
     {
-        // Invalid data redirects back to the form; the article is created only after every rule passes.
-        $request->validate([
+        // Validate the Article fields and every selected Tag ID before creating anything.
+         $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'content' => ['required', 'string'],
             'author_id' => ['required', 'integer', 'exists:users,id'],
+            'tags' => ['nullable', 'array'],
+            'tags.*' => ['integer', 'exists:tags,id'],
         ]);
 
-        // Use the authenticated user's ID instead of trusting an author ID submitted by the form.
-        // is_public is omitted, so the database default creates a private article.
-        Article::create([
-            'title' => $request['title'],
-            'content' => $request['content'],
-            'author_id' => auth()->user()->id,
-        ]);
+            // Use the authenticated user's ID instead of trusting an author ID submitted by the form.
+            // is_public is omitted, so the database default creates a private article.
+        $article = Article::create([
+                'title' => $request['title'],
+                'content' => $request['content'],
+                'author_id' => auth()->user()->id,
+            ]);
 
-        // Return the administrator to the complete article list after creation.
-        return redirect()->route('admin.articles.index');
+             // Save the selected Tag connections in article_tag; use an empty array when none were selected.
+            $article->tags()->sync($request->input('tags', []));
+
+            // Return to the Article management list after creating the Article and attaching its Tags.
+            return redirect()->route('admin.articles.index');
     }
 
     // Route model binding loads the Article whose ID appears in the edit URL.
@@ -53,8 +61,13 @@ class ArticleController extends Controller
         // Authentication proves who is logged in; canChange() authorizes this specific Article.
         abort_unless($article->canChange(auth()->user()), 403);
 
-        // Pass that Article to the view so its current values can fill the form.
-        return view('admin.articles.edit', compact('article'));
+        // Retrieve every Tag so the edit form can display all available checkbox options.
+        $tag_options = Tag::orderBy('name')
+            ->pluck('name', 'id')
+            ->toArray();
+
+        // Pass the Article and all Tag options to the edit form.
+        return view('admin.articles.edit', compact('article', 'tag_options'));
     }
 
     // Receive the edit form and update the same Article supplied by route model binding.
@@ -68,6 +81,8 @@ class ArticleController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'content' => ['required', 'string'],
             'author_id' => ['required', 'integer', 'exists:users,id'],
+            'tags' => ['nullable', 'array'],
+            'tags.*' => ['integer', 'exists:tags,id'],
         ]);
 
         // Only these existing article values change; is_public remains unchanged.
@@ -76,6 +91,9 @@ class ArticleController extends Controller
             'content' => $request['content'],
             'author_id' => $request['author_id'],
         ]);
+
+        // Replace the Article's Tag relationships with the Tags selected in the edit form.
+        $article->tags()->sync($request->input('tags', []));
 
         // Return the administrator to the article list after the update.
         return redirect()->route('admin.articles.index');

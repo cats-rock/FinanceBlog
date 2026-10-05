@@ -14,6 +14,9 @@
     {{-- A new article has no saved author fallback; the component restores old input after validation fails. --}}
     <x-form-number-input name="author_id" label="Author" placeholder="Author ID" />
 
+    {{-- Display one checkbox for every Tag supplied by ArticleController::create(). --}}
+     <x-form-checkboxes name="tags" label="Tags" :options="$tag_options"/>
+
     {{-- Submitting sends the form to the store route; it does not call create() again. --}}
     <button type="submit">Create article</button>
 </form>

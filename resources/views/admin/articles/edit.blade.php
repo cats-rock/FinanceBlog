@@ -16,5 +16,8 @@
     {{-- Supply the saved author ID as the fallback; old input takes priority after validation fails. --}}
     <x-form-number-input name="author_id" label="Author" placeholder="Author ID" value="{{$article->author_id}}" />
 
+    {{-- Supply the Article's current Tag IDs so its existing relationships begin checked. --}}
+    <x-form-checkboxes name="tags" label="Tags" :values="$article->tags->pluck('id')->toArray()" :options="$tag_options"/>
+
     <button type="submit">Save changes</button>
 </form>
