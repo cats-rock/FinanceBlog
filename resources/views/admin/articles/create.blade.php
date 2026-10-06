@@ -24,6 +24,14 @@
                         {{-- Display Users as readable Author choices and restore the submitted choice after validation fails. --}}
                         <x-form-select name="author_id" label="Author" :options="$author_options" />
 
+                        {{-- Choose whether visitors can see the Article immediately or whether it remains a private draft. --}}
+                        <x-form-radio-buttons
+                            name="is_public"
+                            label="Visibility"
+                            value="0"
+                            :options="[0 => 'Private draft', 1 => 'Public']"
+                        />
+
                         {{-- Display one checkbox for every Tag supplied by ArticleController::create(). --}}
                         <x-form-checkboxes name="tags" label="Tags" :options="$tag_options" />
 

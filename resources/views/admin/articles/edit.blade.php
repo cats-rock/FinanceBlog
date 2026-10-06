@@ -29,6 +29,14 @@
                         {{-- Display all Users and select the Article's current Author unless old input is available. --}}
                         <x-form-select name="author_id" label="Author" :options="$author_options" value="{{ $article->author_id }}" />
 
+                        {{-- Display and allow changing the Article's current public/private visibility. --}}
+                        <x-form-radio-buttons
+                            name="is_public"
+                            label="Visibility"
+                            value="{{ (int) $article->is_public }}"
+                            :options="[0 => 'Private draft', 1 => 'Public']"
+                        />
+
                         {{-- Supply the Article's current Tag IDs so its existing relationships begin checked. --}}
                         <x-form-checkboxes name="tags" label="Tags" :values="$article->tags->pluck('id')->toArray()" :options="$tag_options" />
 

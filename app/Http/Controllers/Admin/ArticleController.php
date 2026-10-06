@@ -38,16 +38,17 @@ class ArticleController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'content' => ['required', 'string'],
             'author_id' => ['required', 'integer', 'exists:users,id'],
+            'is_public' => ['required', 'boolean'],
             'tags' => ['nullable', 'array'],
             'tags.*' => ['integer', 'exists:tags,id'],
         ]);
 
-            // Use the authenticated user's ID instead of trusting an author ID submitted by the form.
-            // is_public is omitted, so the database default creates a private article.
+            // Use the authenticated user's ID and store the visibility selected in the form.
         $article = Article::create([
                 'title' => $request['title'],
                 'content' => $request['content'],
                 'author_id' => auth()->user()->id,
+                'is_public' => $request->boolean('is_public'),
             ]);
 
              // Save the selected Tag connections in article_tag; use an empty array when none were selected.
@@ -88,15 +89,17 @@ class ArticleController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'content' => ['required', 'string'],
             'author_id' => ['required', 'integer', 'exists:users,id'],
+            'is_public' => ['required', 'boolean'],
             'tags' => ['nullable', 'array'],
             'tags.*' => ['integer', 'exists:tags,id'],
         ]);
 
-        // Only these existing article values change; is_public remains unchanged.
+        // Update the Article fields, including the visibility selected in the edit form.
         $article->update([
             'title' => $request['title'],
             'content' => $request['content'],
             'author_id' => $request['author_id'],
+            'is_public' => $request->boolean('is_public'),
         ]);
 
         // Replace the Article's Tag relationships with the Tags selected in the edit form.
