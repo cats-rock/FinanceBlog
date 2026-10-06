@@ -20,6 +20,20 @@ it('shows the available tags on the create article form', function () {
     $response->assertSee('value="'.$tag->id.'"', escape: false);
 });
 
+it('shows the available authors and current author on the edit article form', function () {
+    $author = User::factory()->create(['name' => 'Current Author']);
+    $otherAuthor = User::factory()->create(['name' => 'Other Author']);
+    $article = Article::factory()->create(['author_id' => $author->id]);
+
+    $response = $this->actingAs($author)
+        ->get(route('admin.articles.edit', $article));
+
+    $response->assertOk();
+    $response->assertSee('Current Author');
+    $response->assertSee('Other Author');
+    $response->assertSeeInOrder(['value="'.$author->id.'"', 'selected'], escape: false);
+});
+
 it('attaches the selected tags when an article is created', function () {
     $user = User::factory()->create();
     $selectedTag = Tag::factory()->create();

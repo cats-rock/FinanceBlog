@@ -68,8 +68,13 @@ class ArticleController extends Controller
             ->pluck('name', 'id')
             ->toArray();
 
-        // Pass the Article and all Tag options to the edit form.
-        return view('admin.articles.edit', compact('article', 'tag_options'));
+        // Retrieve every User so the edit form can display readable Author choices.
+        $author_options = User::orderBy('name')
+            ->pluck('name', 'id')
+            ->toArray();
+
+        // Pass the Article, Tag options, and Author options to the edit form.
+        return view('admin.articles.edit', compact('article', 'tag_options', 'author_options'));
     }
 
     // Receive the edit form and update the same Article supplied by route model binding.
