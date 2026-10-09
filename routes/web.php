@@ -8,6 +8,7 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\ToolController;
 
 // Import Laravel's Route facade, which is used to define the application's URLs.
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,10 @@ Route::get('authors/{user}', [AuthorController::class, 'show'])->name('authors.s
 // Tags can be browsed directly, and each Tag page lists its related public Articles.
 Route::get('tags', [TagController::class, 'index'])->name('tags.index');
 Route::get('tags/{tag}', [TagController::class, 'show'])->name('tags.show');
+
+// Public routes: visitors can browse the tools list and view each tool's detail page.
+Route::get('tools', [ToolController::class, 'index'])->name('tools.index');
+Route::get('tools/{tool}', [ToolController::class, 'show'])->name('tools.show');
 
 // Authenticated routes: only logged-in users can access these pages.
 Route::get('/dashboard', function () {

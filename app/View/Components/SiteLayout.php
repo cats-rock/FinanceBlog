@@ -26,6 +26,7 @@ class SiteLayout extends Component
             ['label' => 'Articles', 'link' => route('articles.index'), 'match' => 'articles.*'],
             ['label' => 'Author', 'link' => route('authors.index'), 'match' => 'authors.*'],
             ['label' => 'Tags', 'link' => route('tags.index'), 'match' => 'tags.*'],
+            ['label' => 'Tools', 'link' => route('tools.index'), 'match' => 'tools.*'],
         ];
     }
 
