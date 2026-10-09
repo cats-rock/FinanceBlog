@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Article;
 use App\Models\Tag;
-use App\Models\User;
 use App\Models\Tool;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -32,11 +32,20 @@ class DatabaseSeeder extends Seeder
             'author_id' => $user->id,
         ]);
 
-        // Create five sample Tools owned by the known administrator.
-        Tool::factory(5)->create([
+        // Seed the real calculator with its stable key so fresh databases can display it.
+        Tool::create([
+            'name' => 'Savings Rate Calculator',
+            'description' => 'Calculate your monthly income, expenses, savings, and savings rate. Include employer contributions to see total savings alongside the cash remaining after expenses.',
+            'user_id' => $user->id,
+            'calculator_key' => 'savings-rate',
+            'is_public' => true,
+        ]);
+
+        // Keep five Tools in total: the real calculator and four sample records.
+        Tool::factory(4)->create([
             'user_id' => $user->id,
         ]);
-        
+
         // Create five Tags that can be shared by the sample Articles.
         Tag::factory(5)->create();
 
