@@ -7,7 +7,17 @@
 
     <div class="p-6">
         @forelse ($tools as $tool)
-            <p>{{ $tool->name }}</p>
+            <div class="flex flex-wrap items-center justify-between gap-4 border-t border-rule py-4">
+                <span class="text-body-s text-ink">{{ $tool->name }}</span>
+
+                {{-- Open the editing form for this specific Tool. --}}
+                <a
+                    href="{{ route('admin.tools.edit', $tool) }}"
+                    class="font-label text-label-s text-ink transition-colors duration-200 hover:text-ink-muted"
+                >
+                    Edit
+                </a>
+            </div>
         @empty
             <p>No tools are available yet.</p>
         @endforelse

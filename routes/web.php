@@ -1,15 +1,14 @@
 <?php
 
 // Import the controllers so their short class names can be used in the routes below.
-use App\Http\Controllers\Userzone\ProfileController;
+use App\Http\Controllers\ArticleController;
 // Import WelcomeController so the route can use its short class name
 // instead of the full App\Http\Controllers\WelcomeController namespace.
-use App\Http\Controllers\WelcomeController;
-use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\ToolController;
-
+use App\Http\Controllers\Userzone\ProfileController;
+use App\Http\Controllers\WelcomeController;
 // Import Laravel's Route facade, which is used to define the application's URLs.
 use Illuminate\Support\Facades\Route;
 
@@ -60,13 +59,21 @@ Route::middleware(['auth'])->group(function () {
     Route::put('admin/articles/{article}', [App\Http\Controllers\Admin\ArticleController::class, 'update'])
         ->name('admin.articles.update');
 
-   // Display the Tools management list.
+    // Display the Tools management list.
     Route::get('admin/tools', [App\Http\Controllers\Admin\ToolController::class, 'index'])
         ->name('admin.tools.index');
 
     // Display the form for creating a Tool.
     Route::get('admin/tools/create', [App\Http\Controllers\Admin\ToolController::class, 'create'])
         ->name('admin.tools.create');
+
+    // Display the form containing the selected Tool's current values.
+    Route::get('admin/tools/{tool}/edit', [App\Http\Controllers\Admin\ToolController::class, 'edit'])
+        ->name('admin.tools.edit');
+
+    // Save the submitted changes to the selected Tool.
+    Route::put('admin/tools/{tool}', [App\Http\Controllers\Admin\ToolController::class, 'update'])
+        ->name('admin.tools.update');
 
     // DELETE the selected article by passing it to the controller's destroy method.
     Route::delete(
