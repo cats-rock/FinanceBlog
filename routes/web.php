@@ -75,6 +75,10 @@ Route::middleware(['auth'])->group(function () {
     Route::put('admin/tools/{tool}', [App\Http\Controllers\Admin\ToolController::class, 'update'])
         ->name('admin.tools.update');
 
+    // Delete the selected Tool through the administrator-only controller action.
+    Route::delete('admin/tools/{tool}', [App\Http\Controllers\Admin\ToolController::class, 'destroy'])
+        ->name('admin.tools.destroy');
+
     // DELETE the selected article by passing it to the controller's destroy method.
     Route::delete(
         'admin/articles/{article}',

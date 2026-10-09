@@ -146,9 +146,10 @@ it('returns 404 when the requested Tool does not exist', function (string $metho
 })->with([
     'edit' => ['get', 'admin.tools.edit'],
     'update' => ['put', 'admin.tools.update'],
+    'delete' => ['delete', 'admin.tools.destroy'],
 ]);
 
-it('links each public and private Tool to its own editing form', function () {
+it('shows editing links and protected deletion forms for public and private Tools', function () {
     $admin = User::factory()->create(['is_admin' => true]);
     $publicTool = Tool::factory()->for($admin)->create(['name' => 'Public calculator', 'is_public' => true]);
     $privateTool = Tool::factory()->for($admin)->create(['name' => 'Private calculator', 'is_public' => false]);
@@ -160,4 +161,45 @@ it('links each public and private Tool to its own editing form', function () {
     $response->assertSee('Private calculator');
     $response->assertSee('href="'.route('admin.tools.edit', $publicTool).'"', false);
     $response->assertSee('href="'.route('admin.tools.edit', $privateTool).'"', false);
+    $response->assertSee('action="'.route('admin.tools.destroy', $publicTool).'"', false);
+    $response->assertSee('action="'.route('admin.tools.destroy', $privateTool).'"', false);
+    $response->assertSee('name="_method" value="DELETE"', false);
+    $response->assertSee('name="_token"', false);
+});
+
+it('deletes only the selected Tool and keeps its owner and other Tools', function (bool $isPublic) {
+    $admin = User::factory()->create(['is_admin' => true]);
+    $owner = User::factory()->create();
+    $tool = Tool::factory()->for($owner)->create([
+        'is_public' => $isPublic,
+        'calculator_key' => 'savings-rate',
+    ]);
+    $otherTool = Tool::factory()->for($owner)->create();
+
+    $response = $this->actingAs($admin)->delete(route('admin.tools.destroy', $tool));
+
+    $response->assertRedirect(route('admin.tools.index'));
+    $this->assertModelMissing($tool);
+    $this->assertModelExists($owner);
+    $this->assertModelExists($otherTool);
+    $this->get(route('tools.show', $tool))->assertNotFound();
+})->with(['public' => true, 'private' => false]);
+
+it('redirects guests to login without deleting the Tool', function () {
+    $tool = Tool::factory()->create();
+
+    $response = $this->delete(route('admin.tools.destroy', $tool));
+
+    $response->assertRedirect(route('login'));
+    $this->assertModelExists($tool);
+});
+
+it('forbids regular users from deleting even their own Tool', function () {
+    $user = User::factory()->create(['is_admin' => false]);
+    $tool = Tool::factory()->for($user)->create();
+
+    $response = $this->actingAs($user)->delete(route('admin.tools.destroy', $tool));
+
+    $response->assertForbidden();
+    $this->assertModelExists($tool);
 });

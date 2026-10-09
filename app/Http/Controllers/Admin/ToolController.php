@@ -52,4 +52,14 @@ class ToolController extends Controller
 
         return redirect()->route('admin.tools.index');
     }
+
+    // Remove the selected Tool record; its User and calculator code remain available.
+    public function destroy(Tool $tool): RedirectResponse
+    {
+        abort_unless(auth()->user()->is_admin, 403);
+
+        $tool->delete();
+
+        return redirect()->route('admin.tools.index');
+    }
 }
