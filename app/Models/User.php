@@ -53,4 +53,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Article::class, 'author_id');
     }
+
+    // One User can create many Tools through tools.user_id.
+    public function tools()
+    {
+        return $this->hasMany(Tool::class, 'user_id');
+    }
 }
