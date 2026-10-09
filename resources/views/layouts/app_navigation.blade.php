@@ -25,6 +25,16 @@
                     <x-breeze.nav-link :href="route('admin.tags.index')" :active="request()->routeIs('admin.tags.*')">
                         {{ __('Tag management') }}
                     </x-breeze.nav-link>
+
+                    {{-- Show Tool management to administrators. --}}
+                    @if (auth()->user()->is_admin)
+                        <x-breeze.nav-link
+                            :href="route('admin.tools.index')"
+                            :active="request()->routeIs('admin.tools.*')"
+                        >
+                            {{ __('Tool management') }}
+                        </x-breeze.nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -90,6 +100,16 @@
             <x-breeze.responsive-nav-link :href="route('admin.tags.index')" :active="request()->routeIs('admin.tags.*')">
                 {{ __('Tag management') }}
             </x-breeze.responsive-nav-link>
+
+            {{-- Show Tool management in the mobile menu for administrators. --}}
+            @if (auth()->user()->is_admin)
+                <x-breeze.responsive-nav-link
+                    :href="route('admin.tools.index')"
+                    :active="request()->routeIs('admin.tools.*')"
+                >
+                    {{ __('Tool management') }}
+                </x-breeze.responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

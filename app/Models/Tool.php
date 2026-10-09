@@ -13,7 +13,7 @@ class Tool extends Model
    // Allow the factory and future Tool forms to mass assign Tool attributes.
     protected $guarded = [];
 
-    // One each belongs to one User;
+    // Each Tool belongs to one User through user_id.
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

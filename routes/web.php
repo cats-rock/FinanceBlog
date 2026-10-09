@@ -60,6 +60,14 @@ Route::middleware(['auth'])->group(function () {
     Route::put('admin/articles/{article}', [App\Http\Controllers\Admin\ArticleController::class, 'update'])
         ->name('admin.articles.update');
 
+   // Display the Tools management list.
+    Route::get('admin/tools', [App\Http\Controllers\Admin\ToolController::class, 'index'])
+        ->name('admin.tools.index');
+
+    // Display the form for creating a Tool.
+    Route::get('admin/tools/create', [App\Http\Controllers\Admin\ToolController::class, 'create'])
+        ->name('admin.tools.create');
+
     // DELETE the selected article by passing it to the controller's destroy method.
     Route::delete(
         'admin/articles/{article}',
