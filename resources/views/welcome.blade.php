@@ -9,5 +9,6 @@
         <x-site-button :href="route('articles.index')">Browse Articles</x-site-button>
         <x-site-button :href="route('authors.index')" variant="outline">Meet the Author</x-site-button>
         <x-site-button :href="route('tags.index')" variant="outline">Explore Tags</x-site-button>
+        <x-site-button :href="route('tools.index')" variant="outline">Browse Tools</x-site-button>
     </div>
 </x-site-layout>
